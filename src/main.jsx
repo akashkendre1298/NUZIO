@@ -650,23 +650,20 @@ function ArticleDetailScreen({ story, onBack, onPlayStory, activeStory, playing 
 
   return (
     <div className="screen-content">
+      {/* Clean Single Header */}
       <div className="app-header">
-        <button className="icon-btn" onClick={onBack} title="Go back">
-          ←
+        <button
+          className="skip-btn"
+          style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--primary)', fontWeight: 800, fontSize: '14px' }}
+          onClick={onBack}
+        >
+          ← Back to briefing
         </button>
         <div className="brand-logo">
           <div className="brand-bars"><span /><span /><span /></div>
           Nuzio AI
         </div>
       </div>
-
-      <button
-        className="skip-btn"
-        style={{ textAlign: 'left', marginBottom: '16px', color: 'var(--primary)', fontWeight: 800, fontSize: '14px' }}
-        onClick={onBack}
-      >
-        ← Back to briefing
-      </button>
 
       <div className="brief-status-tag" style={{ background: 'rgba(108, 92, 231, 0.15)', borderColor: 'var(--primary)', color: 'var(--primary)', marginBottom: '14px' }}>
         <span>{story.topic} · {story.minutes} MIN AUDIO READ</span>
@@ -680,20 +677,21 @@ function ArticleDetailScreen({ story, onBack, onPlayStory, activeStory, playing 
         By <strong>{story.author || 'Editorial Desk'}</strong> · {story.source} · {story.time}
       </div>
 
-      <div className="now-playing-card" style={{ marginBottom: '24px' }}>
+      {/* Audio Summary Box */}
+      <div className="article-audio-box">
         <div className="now-playing-header">AUDIO SUMMARY</div>
-        <p className="now-playing-deck" style={{ fontSize: '13.5px', color: '#FFF', marginBottom: '16px' }}>{story.deck}</p>
-        <button className="btn-primary" onClick={() => onPlayStory(story)}>
-          {isPlaying ? '❚❚ Pause Narration' : '▶ Listen to audio'}
+        <p style={{ fontSize: '13.5px', color: '#E2E8F0', lineHeight: '1.5', margin: '8px 0 16px' }}>{story.deck}</p>
+        <button className="btn-primary" style={{ width: '100%' }} onClick={() => onPlayStory(story)}>
+          {isPlaying ? '❚❚ Pause Narration' : '▶ Listen to full audio story'}
         </button>
       </div>
 
-      <div className="article-body-text" style={{ fontSize: '14.5px', lineHeight: '1.75', color: '#DDD', marginBottom: '32px' }}>
+      <div className="article-body-text" style={{ fontSize: '14.5px', lineHeight: '1.75', color: '#DDD', marginBottom: '28px' }}>
         {story.body}
       </div>
 
-      <button className="btn-secondary" style={{ marginBottom: '24px' }} onClick={onBack}>
-        ← Back to briefing
+      <button className="btn-secondary" style={{ marginBottom: '32px' }} onClick={onBack}>
+        ← Return to Briefing Feed
       </button>
     </div>
   );
