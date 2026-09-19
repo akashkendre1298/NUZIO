@@ -1,0 +1,122 @@
+export const stories = [
+  {
+    id: 'claude-45',
+    topic: 'AI & Tech',
+    source: 'The Verge',
+    minutes: 3,
+    color: '#6C5CE7',
+    title: 'Anthropic ships Claude 4.5 with 2M-token memory and native tools.',
+    deck: 'Anthropic’s new inventory layer lets Claude hold entire codebases in mind while executing autonomous agentic workflows.',
+    author: 'Alex Chen',
+    time: '12 min ago',
+    body: 'Good morning. Anthropic has officially unveiled Claude 4.5 today. The model introduces a breakthrough 2 million token context window alongside native multi-agent execution capabilities. Developers and research institutions report dramatic improvements in complex software architecture, multi-file code refactoring, and long-form document synthesis. The system demonstrates state-of-the-art benchmark results in tool utilization and multi-turn reasoning.'
+  },
+  {
+    id: 'fed-policy',
+    topic: 'Markets',
+    source: 'The Ledger',
+    minutes: 4,
+    color: '#00E676',
+    title: 'Fed minutes hint at a September rate reduction policy shift.',
+    deck: 'Federal Reserve officials express confidence that inflation is steadily cooling toward target levels while employment remains balanced.',
+    author: 'Priya Sharma',
+    time: '28 min ago',
+    body: 'In financial markets news, Federal Reserve policymakers indicated during their recent executive session that macroeconomic data aligns with a potential interest rate cut this September. Treasury yields eased following the announcement, while technology equities and renewable energy funds surged in global morning trade. Analysts view this as a pivotal pivot toward monetary easing.'
+  },
+  {
+    id: 'india-startups',
+    topic: 'Startups',
+    source: 'TechCrunch',
+    minutes: 3,
+    color: '#FF7675',
+    title: 'Indian AI startups secure $450M in Q3 early-stage funding.',
+    deck: 'Bengaluru and Gurgaon ecosystem leads venture capital momentum in Indic LLM foundation models and localized audio AI.',
+    author: 'Karan Mehta',
+    time: '45 min ago',
+    body: 'Across Indian technology hubs, startup investment has reached a fresh high this quarter. Over $450 million in venture capital was deployed into voice-native AI interfaces and Indian language foundation models. Founders in Bengaluru and Gurgaon are building domain-specific generative models tailored for enterprise customer support, fintech compliance, and vernacular voice search.'
+  },
+  {
+    id: 'isro-gaganyaan',
+    topic: 'Indian Business',
+    source: 'The Hindu Tech',
+    minutes: 4,
+    color: '#fdcb6e',
+    title: 'ISRO advances Gaganyaan crew module flight abort test.',
+    deck: 'India’s space agency achieves key milestone in human spaceflight infrastructure with successful high-altitude test escape system.',
+    author: 'Siddharth Rao',
+    time: '52 min ago',
+    body: 'ISRO has successfully executed another critical milestone for the Gaganyaan mission. The high-altitude crew escape system operated flawlessly during simulated booster separation at Mach 1.2 off the coast of Sriharikota. Space agency officials confirmed environmental control systems and recovery parachutes performed within optimal limits.'
+  },
+  {
+    id: 'quantum-chip',
+    topic: 'Science',
+    source: 'Vector',
+    minutes: 5,
+    color: '#74B9FF',
+    title: 'Breakthrough fault-tolerant quantum logic gates demonstrated.',
+    deck: 'Physicists at Oxford and MIT achieve 99.9% gate fidelity using micro-cavity optical ion traps.',
+    author: 'Dr. Evelyn Vance',
+    time: '1 hr ago',
+    body: 'Turning to science news. A joint quantum physics research team at MIT and Oxford has successfully demonstrated error-corrected quantum operations at scale. By leveraging topological qubits and micro-cavity optical traps, the system maintains quantum coherence for extended periods, paving the way for practical molecular simulations in drug discovery.'
+  },
+  {
+    id: 'climate-grid',
+    topic: 'Climate & Energy',
+    source: 'CleanTech Daily',
+    minutes: 4,
+    color: '#00CEC9',
+    title: 'Next-gen solid state sodium batteries enter pilot grid trials.',
+    deck: 'New sodium-ion cathode formulations promise 40% cost reduction in grid-scale renewable energy storage.',
+    author: 'Marcus Vance',
+    time: '2 hrs ago',
+    body: 'In climate and energy, grid-scale storage is receiving a massive boost from solid-state sodium ion technologies. Pilot deployment projects across California and Gujarat show promising cycle endurance and thermal stability at 40% lower material costs compared to traditional lithium-ion systems.'
+  },
+  {
+    id: 'apple-m4-ultra',
+    topic: 'AI & Tech',
+    source: 'Wired',
+    minutes: 3,
+    color: '#a29bfe',
+    title: 'Apple reveals M4 Ultra silicon designed for local neural inference.',
+    deck: 'New 32-core unified architecture delivers 120 trillion operations per second on device.',
+    author: 'David Miller',
+    time: '2.5 hrs ago',
+    body: 'Apple has announced its latest flagship silicon, the M4 Ultra. Engineered specifically for high-throughput machine learning workloads, the chip packages 32 high-performance cores alongside an expanded Neural Engine capable of running 70-billion-parameter LLMs locally with under 15 watts of power consumption.'
+  },
+  {
+    id: 'global-trade',
+    topic: 'Geopolitics',
+    source: 'World Brief',
+    minutes: 4,
+    color: '#6c5ce7',
+    title: 'Digital trade corridor treaty signed by 14 Indo-Pacific nations.',
+    deck: 'Harmonized data sovereignty regulations, cross-border payments, and AI governance frameworks approved.',
+    author: 'Elena Rostova',
+    time: '3 hrs ago',
+    body: 'In global policy, representatives from 14 Indo-Pacific nations have signed a landmark digital trade treaty. The agreement establishes unified standards for cloud infrastructure, cross-border payment rails, data sovereignty protections, and ethical AI auditing across member economies.'
+  },
+  {
+    id: 'rbi-upi-crossborder',
+    topic: 'Markets',
+    source: 'Economic Times',
+    minutes: 3,
+    color: '#00E676',
+    title: 'RBI expands real-time cross-border UPI payments to 8 new countries.',
+    deck: 'Tourists and non-resident Indians in Japan, UAE, and Europe can now transact seamlessly via instant QR codes.',
+    author: 'Rohan Deshmukh',
+    time: '4 hrs ago',
+    body: 'The Reserve Bank of India has officially announced the international expansion of UPI real-time payment rails to eight new countries. The integration allows tourists and Indian diaspora members in Japan, the UAE, France, and Singapore to scan merchant QR codes directly from their existing mobile banking apps with instant currency conversion.'
+  },
+  {
+    id: 'crispr-cancer-cure',
+    topic: 'Health & Medicine',
+    source: 'Nature Medicine',
+    minutes: 4,
+    color: '#FF7675',
+    title: 'Phase II trial shows 88% remission in targeted CRISPR therapy.',
+    deck: 'Oncolytic cell editing demonstrates complete clearance of recalcitrant solid tumor malignancies.',
+    author: 'Dr. Sarah Jenkins',
+    time: '5 hrs ago',
+    body: 'In health news, a groundbreaking Phase II clinical trial published in Nature Medicine reports an 88% complete remission rate among patients receiving personalized CRISPR-edited T-cell therapy. The targeted gene editing technique equips patient immune cells to recognize and dismantle solid tumors without severe off-target toxicity.'
+  }
+];
