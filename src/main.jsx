@@ -198,16 +198,23 @@ function SplashScreen({ onStart }) {
 }
 
 /* --- LANGUAGE & LOCATION SCREEN --- */
-function LanguageLocationScreen({ onNext }) {
+function LanguageLocationScreen({ onNext, onBack }) {
   const [lang, setLang] = useState('English');
   const [locEnabled, setLocEnabled] = useState(false);
 
   return (
     <div className="screen-content">
       <div className="app-header">
-        <div className="brand-logo">
-          <div className="brand-bars"><span /><span /><span /></div>
-          Nuzio AI
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          {onBack && (
+            <button className="icon-btn" onClick={onBack} title="Go back">
+              ←
+            </button>
+          )}
+          <div className="brand-logo">
+            <div className="brand-bars"><span /><span /><span /></div>
+            Nuzio AI
+          </div>
         </div>
       </div>
       <h1 className="screen-title">Choose your<br /><em>language</em></h1>
@@ -257,7 +264,7 @@ function LanguageLocationScreen({ onNext }) {
 }
 
 /* --- AUTH SCREEN --- */
-function AuthScreen({ onAuth }) {
+function AuthScreen({ onAuth, onBack }) {
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
 
@@ -268,7 +275,6 @@ function AuthScreen({ onAuth }) {
       const data = await api('/api/auth/demo', { method: 'POST' });
       onAuth(data);
     } catch (err) {
-      // Fallback demo user if server un-reachable
       onAuth({
         token: 'demo-token-123',
         user: {
@@ -286,13 +292,20 @@ function AuthScreen({ onAuth }) {
   return (
     <div className="screen-content">
       <div className="app-header">
-        <div className="brand-logo">
-          <div className="brand-bars"><span /><span /><span /></div>
-          Nuzio AI
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          {onBack && (
+            <button className="icon-btn" onClick={onBack} title="Go back">
+              ←
+            </button>
+          )}
+          <div className="brand-logo">
+            <div className="brand-bars"><span /><span /><span /></div>
+            Nuzio AI
+          </div>
         </div>
       </div>
 
-      <div style={{ marginTop: '40px', marginBottom: '30px' }}>
+      <div style={{ marginTop: '30px', marginBottom: '30px' }}>
         <h1 className="screen-title">Good morning.<br /><em>News on go.</em></h1>
         <p className="screen-subtitle">
           Personalised audio news for Indian professionals — curated every morning.
@@ -318,7 +331,7 @@ function AuthScreen({ onAuth }) {
 }
 
 /* --- ONBOARDING MULTI-STEP FLOW --- */
-function OnboardingFlow({ prefs, onComplete, onSkip }) {
+function OnboardingFlow({ prefs, onComplete, onSkip, onBackToAuth }) {
   const [step, setStep] = useState(1);
   const [profession, setProfession] = useState(prefs.profession || 'Technology');
   const [niches, setNiches] = useState(prefs.niches || ['AI & Technology', 'Financial Markets', 'Startups']);
@@ -375,12 +388,25 @@ function OnboardingFlow({ prefs, onComplete, onSkip }) {
     }
   }
 
+  function handleBack() {
+    if (step > 1) {
+      setStep(step - 1);
+    } else if (onBackToAuth) {
+      onBackToAuth();
+    }
+  }
+
   return (
     <div className="screen-content">
       <div className="app-header">
-        <div className="brand-logo">
-          <div className="brand-bars"><span /><span /><span /></div>
-          Nuzio AI
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <button className="icon-btn" onClick={handleBack} title="Go back to previous step">
+            ←
+          </button>
+          <div className="brand-logo">
+            <div className="brand-bars"><span /><span /><span /></div>
+            Nuzio AI
+          </div>
         </div>
         <button className="skip-btn" onClick={onSkip}>SKIP →</button>
       </div>
@@ -549,11 +575,14 @@ function OnboardingFlow({ prefs, onComplete, onSkip }) {
 }
 
 /* --- ALL SET CONFIRMATION SCREEN --- */
-function AllSetScreen({ user, onStartListening }) {
+function AllSetScreen({ user, onStartListening, onBackToOnboarding }) {
   const prefs = user.preferences || {};
   return (
     <div className="screen-content">
       <div className="app-header">
+        <button className="icon-btn" onClick={onBackToOnboarding} title="Go back to calibration">
+          ←
+        </button>
         <div className="brand-logo">
           <div className="brand-bars"><span /><span /><span /></div>
           Nuzio AI
@@ -614,8 +643,64 @@ function AllSetScreen({ user, onStartListening }) {
   );
 }
 
+/* --- ARTICLE DETAIL SCREEN (FULL READER) --- */
+function ArticleDetailScreen({ story, onBack, onPlayStory, activeStory, playing }) {
+  if (!story) return null;
+  const isPlaying = activeStory?.id === story.id && playing;
+
+  return (
+    <div className="screen-content">
+      <div className="app-header">
+        <button className="icon-btn" onClick={onBack} title="Go back">
+          ←
+        </button>
+        <div className="brand-logo">
+          <div className="brand-bars"><span /><span /><span /></div>
+          Nuzio AI
+        </div>
+      </div>
+
+      <button
+        className="skip-btn"
+        style={{ textAlign: 'left', marginBottom: '16px', color: 'var(--primary)', fontWeight: 800, fontSize: '14px' }}
+        onClick={onBack}
+      >
+        ← Back to briefing
+      </button>
+
+      <div className="brief-status-tag" style={{ background: 'rgba(108, 92, 231, 0.15)', borderColor: 'var(--primary)', color: 'var(--primary)', marginBottom: '14px' }}>
+        <span>{story.topic} · {story.minutes} MIN AUDIO READ</span>
+      </div>
+
+      <h1 className="screen-title" style={{ fontSize: '24px', lineHeight: '1.3', marginBottom: '12px' }}>
+        {story.title}
+      </h1>
+
+      <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '20px' }}>
+        By <strong>{story.author || 'Editorial Desk'}</strong> · {story.source} · {story.time}
+      </div>
+
+      <div className="now-playing-card" style={{ marginBottom: '24px' }}>
+        <div className="now-playing-header">AUDIO SUMMARY</div>
+        <p className="now-playing-deck" style={{ fontSize: '13.5px', color: '#FFF', marginBottom: '16px' }}>{story.deck}</p>
+        <button className="btn-primary" onClick={() => onPlayStory(story)}>
+          {isPlaying ? '❚❚ Pause Narration' : '▶ Listen to audio'}
+        </button>
+      </div>
+
+      <div className="article-body-text" style={{ fontSize: '14.5px', lineHeight: '1.75', color: '#DDD', marginBottom: '32px' }}>
+        {story.body}
+      </div>
+
+      <button className="btn-secondary" style={{ marginBottom: '24px' }} onClick={onBack}>
+        ← Back to briefing
+      </button>
+    </div>
+  );
+}
+
 /* --- PLAYABLE AUDIO PLAYER LOGIC & MORNING BRIEF VIEW --- */
-function BriefingView({ stories, user, activeStory, playing, progress, onSelectStory, onTogglePlay, onSkipTime }) {
+function BriefingView({ stories, user, activeStory, playing, progress, onSelectStory, onOpenArticle, onTogglePlay, onSkipTime }) {
   const currentStory = activeStory || stories[0];
 
   return (
@@ -653,8 +738,12 @@ function BriefingView({ stories, user, activeStory, playing, progress, onSelectS
             <span>NOW PLAYING · {currentStory.topic?.toUpperCase()}</span>
             <span>01 / 0{stories.length}</span>
           </div>
-          <div className="now-playing-title">{currentStory.title}</div>
-          <div className="now-playing-deck">{currentStory.deck || currentStory.body}</div>
+          <div className="now-playing-title" style={{ cursor: 'pointer' }} onClick={() => onOpenArticle(currentStory)}>
+            {currentStory.title}
+          </div>
+          <div className="now-playing-deck" style={{ cursor: 'pointer' }} onClick={() => onOpenArticle(currentStory)}>
+            {currentStory.deck || currentStory.body}
+          </div>
 
           {/* Waveform Visualizer */}
           <div className={`waveform-container ${playing ? 'playing' : ''}`}>
@@ -699,9 +788,9 @@ function BriefingView({ stories, user, activeStory, playing, progress, onSelectS
         <div
           key={s.id}
           className="queue-card"
-          onClick={() => { onSelectStory(s); onTogglePlay(s); }}
+          onClick={() => { onOpenArticle(s); }}
         >
-          <div className="play-small-icon">
+          <div className="play-small-icon" onClick={(e) => { e.stopPropagation(); onSelectStory(s); onTogglePlay(s); }}>
             {activeStory?.id === s.id && playing ? '❚❚' : '▶'}
           </div>
           <div style={{ flex: 1 }}>
@@ -715,7 +804,7 @@ function BriefingView({ stories, user, activeStory, playing, progress, onSelectS
 }
 
 /* --- DISCOVER FEED SCREEN --- */
-function DiscoverView({ stories, onPlayStory, activeStory, playing }) {
+function DiscoverView({ stories, onPlayStory, onOpenArticle, activeStory, playing }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTab, setActiveTab] = useState('All');
 
@@ -770,25 +859,25 @@ function DiscoverView({ stories, onPlayStory, activeStory, playing }) {
       {/* Feed Story Cards */}
       <div className="news-feed-container" style={{ marginTop: '14px' }}>
         {filtered.map(s => (
-          <div key={s.id} className="feed-card">
-          <div className="feed-meta">
-            <span style={{ color: 'var(--primary)', fontWeight: 700 }}>{s.topic}</span>
-            <span>{s.source} · {s.time}</span>
+          <div key={s.id} className="feed-card" onClick={() => onOpenArticle(s)}>
+            <div className="feed-meta">
+              <span style={{ color: 'var(--primary)', fontWeight: 700 }}>{s.topic}</span>
+              <span>{s.source} · {s.time}</span>
+            </div>
+            <div className="feed-title">{s.title}</div>
+            <div className="feed-deck">{s.deck}</div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>{s.minutes} MIN AUDIO READ</span>
+              <button
+                className="btn-primary"
+                style={{ width: 'auto', padding: '8px 16px', fontSize: '12px', borderRadius: '99px' }}
+                onClick={(e) => { e.stopPropagation(); onPlayStory(s); }}
+              >
+                {activeStory?.id === s.id && playing ? '❚❚ Pause' : '▶ Play audio'}
+              </button>
+            </div>
           </div>
-          <div className="feed-title">{s.title}</div>
-          <div className="feed-deck">{s.deck}</div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>{s.minutes} MIN AUDIO READ</span>
-            <button
-              className="btn-primary"
-              style={{ width: 'auto', padding: '8px 16px', fontSize: '12px', borderRadius: '99px' }}
-              onClick={() => onPlayStory(s)}
-            >
-              {activeStory?.id === s.id && playing ? '❚❚ Pause' : '▶ Play audio'}
-            </button>
-          </div>
-        </div>
-      ))}
+        ))}
       </div>
     </div>
   );
@@ -825,8 +914,8 @@ function SettingsView({ user, onRecalibrate, onOpenPlans, onSignOut }) {
       {/* Plan Banner */}
       <div className="plan-banner">
         <div>
-          <div style={{ fontSize: '13px', fontWeight: 800 }}>Free Plan</div>
-          <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>₹0/mo · Standard audio briefs</div>
+          <div style={{ fontSize: '13px', fontWeight: 800 }}>{user.preferences?.plan || 'Free'} Plan</div>
+          <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Standard audio briefs</div>
         </div>
         <button
           className="btn-primary"
@@ -896,9 +985,12 @@ function PlanBillingModal({ user, onUpdatePlan, onClose }) {
       }}
     >
       <div className="app-header">
-        <div>
-          <div className="step-label">MEMBERSHIP</div>
-          <h1 className="screen-title" style={{ fontSize: '24px' }}>Plan & billing</h1>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <button className="icon-btn" onClick={onClose} title="Go back">←</button>
+          <div>
+            <div className="step-label">MEMBERSHIP</div>
+            <h1 className="screen-title" style={{ fontSize: '22px', margin: 0 }}>Plan & billing</h1>
+          </div>
         </div>
         <button className="icon-btn" onClick={onClose}>✕</button>
       </div>
@@ -1014,7 +1106,7 @@ function PlanBillingModal({ user, onUpdatePlan, onClose }) {
       </div>
 
       <button className="btn-secondary" style={{ marginTop: '12px' }} onClick={onClose}>
-        Close
+        ← Back to settings
       </button>
     </div>
   );
@@ -1024,19 +1116,19 @@ function PlanBillingModal({ user, onUpdatePlan, onClose }) {
 function App() {
   const [token, setToken] = useState(() => localStorage.getItem('nuzio_token'));
   const [user, setUser] = useState(() => JSON.parse(localStorage.getItem('nuzio_user') || 'null'));
-  const [screen, setScreen] = useState('splash'); // splash, language, auth, onboarding, allset, app
+  const [screen, setScreen] = useState('splash'); // splash, language, auth, onboarding, allset, app, article
   const [activeTab, setActiveTab] = useState('briefing'); // briefing, discover, settings
   
   // Initialize with fallback stories so stories array is NEVER empty
   const [stories, setStories] = useState(fallbackStories);
   const [showPlans, setShowPlans] = useState(false);
+  const [selectedArticle, setSelectedArticle] = useState(null);
 
   // Playable audio state powered by Web Speech API
   const [activeStory, setActiveStory] = useState(fallbackStories[0]);
   const [playing, setPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
 
-  const speechRef = useRef(null);
   const timerRef = useRef(null);
 
   // Fetch stories from API with automatic fallback
@@ -1122,6 +1214,11 @@ function App() {
     setProgress(newPct);
   }
 
+  function openArticle(story) {
+    setSelectedArticle(story);
+    setScreen('article');
+  }
+
   function handleAuthSuccess(data) {
     localStorage.setItem('nuzio_token', data.token);
     localStorage.setItem('nuzio_user', JSON.stringify(data.user));
@@ -1164,14 +1261,20 @@ function App() {
       )}
 
       {screen === 'language' && (
-        <LanguageLocationScreen onNext={(data) => {
-          setUser(prev => ({ ...prev, preferences: { ...data } }));
-          setScreen('auth');
-        }} />
+        <LanguageLocationScreen
+          onNext={(data) => {
+            setUser(prev => ({ ...prev, preferences: { ...data } }));
+            setScreen('auth');
+          }}
+          onBack={() => setScreen('splash')}
+        />
       )}
 
       {screen === 'auth' && (
-        <AuthScreen onAuth={handleAuthSuccess} />
+        <AuthScreen
+          onAuth={handleAuthSuccess}
+          onBack={() => setScreen('language')}
+        />
       )}
 
       {screen === 'onboarding' && (
@@ -1179,6 +1282,7 @@ function App() {
           prefs={user?.preferences || {}}
           onComplete={handleOnboardingComplete}
           onSkip={() => setScreen('app')}
+          onBackToAuth={() => setScreen('auth')}
         />
       )}
 
@@ -1186,6 +1290,17 @@ function App() {
         <AllSetScreen
           user={user || { name: 'Aarav' }}
           onStartListening={() => setScreen('app')}
+          onBackToOnboarding={() => setScreen('onboarding')}
+        />
+      )}
+
+      {screen === 'article' && selectedArticle && (
+        <ArticleDetailScreen
+          story={selectedArticle}
+          onBack={() => setScreen('app')}
+          onPlayStory={togglePlay}
+          activeStory={activeStory}
+          playing={playing}
         />
       )}
 
@@ -1199,6 +1314,7 @@ function App() {
               playing={playing}
               progress={progress}
               onSelectStory={(s) => setActiveStory(s)}
+              onOpenArticle={openArticle}
               onTogglePlay={togglePlay}
               onSkipTime={skipTime}
             />
@@ -1208,6 +1324,7 @@ function App() {
             <DiscoverView
               stories={stories}
               onPlayStory={togglePlay}
+              onOpenArticle={openArticle}
               activeStory={activeStory}
               playing={playing}
             />
