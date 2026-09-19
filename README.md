@@ -19,6 +19,7 @@ Nuzio AI is a modern full-stack mobile web application designed to deliver perso
 - **🧭 Inshorts-Style Discover Feed**: Real-time keyword search, category filter pills, and instant inline audio play buttons.
 - **⚙️ Settings & Recalibration**: Profile details, offline mode toggles, push notification controls, and 1-click preference recalibration.
 - **💳 Plan & Billing Screen**: Tier comparisons for **Free** (`₹0/mo`), **Pro** (`₹79/mo` or `₹59/mo` annual), and **Ultra Annual** (`₹1,499/yr`).
+- **🔙 Full Navigation & Back Controls**: Interactive back buttons across onboarding steps, Auth, Settings, Plan Modal, and Article Reader view.
 
 ---
 
@@ -35,6 +36,71 @@ Nuzio AI is a modern full-stack mobile web application designed to deliver perso
 - **Web Speech API**: Browser-native `window.speechSynthesis` audio playback
 - **CSS3 / Plus Jakarta Sans**: Custom design tokens & mobile web application layout
 
+### Testing & Quality Assurance
+- **Vitest**: Next-generation unit & integration testing runner
+- **Supertest**: Express API HTTP endpoint assertion library
+- **@vitest/coverage-v8**: Automated V8 code coverage report generator
+
+---
+
+## 🧪 Automated Testing & Coverage Reports
+
+The project includes **20 comprehensive automated test cases** spanning Express REST API endpoints, user authentication handshakes, news feed fallback datasets, search & category filtering logic, and voice/billing specifications.
+
+### 📋 Test Suites Breakdown
+
+1. **Backend Integration & Authentication Suite (`tests/backend_extended.test.js` - 10 Tests)**:
+   - Registration validation (missing fields, passwords < 6 characters).
+   - Successful user signup & credential normalization.
+   - Prevention of duplicate email registrations (`409 Conflict`).
+   - Login credential authentication & session token generation.
+   - Demo guest session authorization (`aarav@nuzio.ai`).
+   - News feed retrieval with multi-paragraph story bodies.
+   - Preference persistence (*voice, profession, niches, plan*).
+   - Security verification rejecting unauthenticated requests without authorization header (`401 Unauthorized`).
+
+2. **Frontend & Data Logic Suite (`tests/frontend_logic.test.js` - 6 Tests)**:
+   - Verification of 10 multi-paragraph news briefing dataset properties.
+   - Search keyword filtering (*e.g. searching "Claude"*).
+   - Category topic filtering (*AI & Tech, Markets, Startups, Science, etc.*).
+   - Category reset on selecting "All".
+   - Narrator voice parameter specifications (**Aria**, **Kai**, **Meera**).
+   - Subscription pricing & 35% annual discount calculation accuracy.
+
+3. **Core API Integration Suite (`tests/backend.test.js` - 4 Tests)**:
+   - End-to-end token handshakes, user state updates, and error handling.
+
+### 🏃 Running Tests & Generating Coverage Reports
+
+```bash
+# Run all 20 test cases
+npm test
+
+# Run tests with V8 coverage and generate HTML/JSON reports
+npm run test:coverage
+
+# Run tests with verbose output
+npm run test:report
+```
+
+### 📊 Code Coverage Metrics
+
+Executing `npm run test:coverage` automatically generates an interactive HTML coverage report in `./coverage/index.html` and a JSON report in `./coverage/coverage-final.json`:
+
+```
+-------------------|---------|----------|---------|---------|
+File               | % Stmts | % Branch | % Funcs | % Lines |
+-------------------|---------|----------|---------|---------|
+ server/data       |     100 |    66.66 |     100 |     100 |
+  stories.js       |     100 |      100 |     100 |     100 |
+  users.js         |     100 |    66.66 |     100 |     100 |
+ server/routes     |     100 |    84.61 |     100 |     100 |
+  authRoutes.js    |     100 |       90 |     100 |     100 |
+  newsRoutes.js    |     100 |      100 |     100 |     100 |
+  prefRoutes.js    |     100 |       50 |     100 |     100 |
+-------------------|---------|----------|---------|---------|
+```
+
 ---
 
 ## 📁 Repository Structure
@@ -45,6 +111,7 @@ NUZIO/
 ├── package.json                # Project dependencies & npm scripts
 ├── server.js                   # Node.js Express server entry point
 ├── vite.config.js              # Vite configuration & API proxy
+├── vitest.config.js            # Vitest configuration & coverage settings
 ├── render.yaml                 # Render infrastructure deployment blueprint
 ├── public/
 │   └── favicon.svg             # Web application icon
@@ -58,6 +125,10 @@ NUZIO/
 │       ├── authRoutes.js       # Auth endpoints (/api/auth)
 │       ├── newsRoutes.js       # News briefing feed endpoints (/api/news)
 │       └── prefRoutes.js       # User preferences endpoints (/api/preferences)
+├── tests/                      # Automated Test Suites (20 Tests)
+│   ├── backend.test.js         # Core API & session tests
+│   ├── backend_extended.test.js # Extended API, signup, login & validation tests
+│   └── frontend_logic.test.js  # Data filtering, search & pricing logic tests
 └── src/                        # React 18 Frontend
     ├── main.jsx                # React app views, Web Speech API audio player & onboarding
     └── styles.css              # Dark mode CSS design system
@@ -75,7 +146,7 @@ NUZIO/
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/akashkendre1298/NUZIO.git
+   git clone https://github.com/<YOUR_USERNAME>/nuzio.git
    cd nuzio
    ```
 
@@ -104,6 +175,9 @@ NUZIO/
 | `npm run dev` | Runs both Node.js backend (`port 3001`) and Vite frontend (`port 5173`) concurrently |
 | `npm run server` | Starts only the Node.js Express server |
 | `npm run client` | Starts only the Vite React development server |
+| `npm test` | Runs all 20 automated test cases |
+| `npm run test:coverage` | Runs test suite and generates HTML & JSON coverage reports in `coverage/` |
+| `npm run test:report` | Runs test suite with verbose output |
 | `npm run build` | Builds the production bundle in `dist/` |
 | `npm start` | Production server start command (`node server.js`) |
 
